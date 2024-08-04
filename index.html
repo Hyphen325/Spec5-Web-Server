@@ -5,74 +5,134 @@
          <meta name="viewport" content="width=device-width, initial-scale=1.0">
          <title>ESP32-S3 Firmware Flasher</title>
          <style>
-            body {
-                font-family: Arial, sans-serif;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                margin: 0;
-                background-color: #f0f0f0;
-            }
-    
-            .container {
-                text-align: center;
-                background-color: white;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-    
-            h1 {
-                font-size: 24px;
-                margin-bottom: 20px;
-                color: #333;
-            }
-    
-            .button-container {
-                display: flex;
-                justify-content: center;
-                gap: 15px;
-            }
-    
-            .btn {
-                background-color: #007BFF;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                font-size: 16px;
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-            }
-    
-            .btn:hover {
-                background-color: #0056b3;
-            }
 
-           
-            input[type = 'file']{
-                display:none;
-            }
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    height: 100vh;
+    margin: 0;
+    background-color: #1f1f1f;
+}
+head{
+    text-align: left;
+    background-color: #0056b3;
+}
+header{
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+
+}
+
+.navigation{
+    color: #777777;
+    font-weight: 100;
+    padding-bottom: 7px;
+    border-bottom: 2px solid #212121;
+}
+.navigation:hover{
+    text-decoration: underline;
+}
+
+.container {
+    text-align: center;
+    background-color: #333333;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn {
+    background-color: #04FF85;
+    color: #181818;
+    font-weight: 700;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #00C565;
+    
+}
+
+
+input[type = 'file']{
+    display:none;
+}
+
+.fade-out{
+    animation: fadeOut 4s;
+
+}
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+.transparent{
+    background-color: transparent;
+}
+
+
         </style>
      </head>
+     
      <body>
-        <div class="container">
+        <main>
+            <header>
+                <h1>
+                    <img src ="//specfive.com/cdn/shop/files/Frame_45.png?v=1721243638&width=600" height =50px >
+                </h1>
+                <h2 class = "navigation">
+                    Home
+
+                </h2>
+                
+                
+            </header>
+        <div class="container" onclick = "myFunction()">
          <h1>ESP32-S3 Firmware Flasher</h1>
          <button class ="btn" id="connect">Connect to ESP32</button>
-         <button class ="btn"  id="flash">Flash Firmware</button>
-         <label class="btn">
-            <input type="file" id="firmware" accept=".bin">
-            Upload .Bin
-        </label>
-         
-         <pre id="output"></pre>
+         <button class ="btn"  id="flash" >Flash Firmware
+            
+         </button>
+         <label class = "transparent">
+            <b1 type="file" id="firmware" src = 'firmware_1_00.bin'>
+         </label>
+            <pre id="output" class = "transparent"></pre>
+            
+            </div>
+
+        <main>
+        
 
          <script>let port;
             let reader;
             let writer;
             let output = document.getElementById("output");
        
+            output.addEventListener("change", async() => {
+               output = ' ';
+            });
             document.getElementById("connect").addEventListener("click", async () => {
                 try {
                     // Request a port and open a connection
@@ -81,7 +141,7 @@
                     await port.open({ baudRate: 115200 });
                     console.log("Connected");
        
-                    output.textContent += "Connected to ESP32-S3\n";
+                    console.log("Connected to ESP32-S3\n");
                     // Setup the writer and reader
                     const encoder = new TextEncoderStream();
                     writer = encoder.writable.getWriter();
@@ -95,10 +155,10 @@
                         if (done) {
                             break;
                         }
-                        output.textContent += value;
+                        console.log(value);
                     }
                 } catch (error) {
-                    output.textContent += "Error: " + error + "\n";
+                    output.textContent = "Error: " + error + "\n";
                 }
             });
        
@@ -106,7 +166,7 @@
                 const fileInput = document.getElementById("firmware");
                 const file = fileInput.files[0];
                 if (!file) {
-                    output.textContent += "Please select a firmware file.\n";
+                    output.textContent = "Please select a firmware file.\n";
                     return;
                 }
        
@@ -119,11 +179,15 @@
                         await writer.write(new Uint8Array([byte]));
                     }
        
-                    output.textContent += "Firmware flashed successfully.\n";
+                    output.textContent = "Firmware flashed successfully.\n";
                 } catch (error) {
-                    output.textContent += "Flashing error: " + error + "\n";
+                    console.log("Flashing error: " + error);
                 }
-            });</script>
+            });
+            function myFunction() {
+            var popup = document.getElementById("myPopup");
+            popup.classList.toggle("show");
+            }       </script>
          <div>
      </body>
      </html>

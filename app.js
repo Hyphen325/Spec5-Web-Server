@@ -3,6 +3,12 @@ let port;
      let writer;
      let output = document.getElementById("output");
 
+     output.addEventListener("change", async() => {
+        output.style.animation = 'none';
+        output.offsetHeight; /* trigger reflow */
+        output.style.animation = null; 
+
+     });
      document.getElementById("connect").addEventListener("click", async () => {
          try {
              // Request a port and open a connection
@@ -11,7 +17,7 @@ let port;
              await port.open({ baudRate: 115200 });
              console.log("Connected");
 
-             output.textContent += "Connected to ESP32-S3\n";
+             output.textContent = "Connected to ESP32-S3\n";
              // Setup the writer and reader
              const encoder = new TextEncoderStream();
              writer = encoder.writable.getWriter();
@@ -28,7 +34,7 @@ let port;
                  output.textContent += value;
              }
          } catch (error) {
-             output.textContent += "Error: " + error + "\n";
+             output.textContent = "Error: " + error + "\n";
          }
      });
 
@@ -36,7 +42,7 @@ let port;
          const fileInput = document.getElementById("firmware");
          const file = fileInput.files[0];
          if (!file) {
-             output.textContent += "Please select a firmware file.\n";
+             output.textContent = "Please select a firmware file.\n";
              return;
          }
 
@@ -49,8 +55,8 @@ let port;
                  await writer.write(new Uint8Array([byte]));
              }
 
-             output.textContent += "Firmware flashed successfully.\n";
+             output.textContent = "Firmware flashed successfully.\n";
          } catch (error) {
-             output.textContent += "Flashing error: " + error + "\n";
+             console.log("Flashing error: " + error);
          }
      });
