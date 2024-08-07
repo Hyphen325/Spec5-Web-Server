@@ -90,6 +90,7 @@ input[type = 'file']{
 }
 .transparent{
     background-color: transparent;
+    color: white;
 }
 
 
@@ -102,21 +103,23 @@ input[type = 'file']{
                 <h1>
                     <img src ="//specfive.com/cdn/shop/files/Frame_45.png?v=1721243638&width=600" height =50px >
                 </h1>
-                <h2 class = "navigation">
-                    Home
-
-                </h2>
+                
                 
                 
             </header>
-        <div class="container" onclick = "myFunction()">
+        <div class="container">
          <h1>ESP32-S3 Firmware Flasher</h1>
          <button class ="btn" id="connect">Connect to ESP32</button>
          <button class ="btn"  id="flash" >Flash Firmware
             
          </button>
-         <label class = "transparent">
-            <b1 type="file" id="firmware" src = 'firmware_1_00.bin'>
+         <label class = "btn">
+         <esp-web-install-button class = "transparent"
+            manifest="./manifest.json"
+        ></esp-web-install-button>
+    </label>
+         <label class = "btn">
+            <input type="file" id="firmware" accept = ".bin">Upload File
          </label>
             <pre id="output" class = "transparent"></pre>
             
@@ -125,69 +128,76 @@ input[type = 'file']{
         <main>
         
 
-         <script>let port;
+         <script type="module" src = "https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module">
+            
+
+            let port;
             let reader;
             let writer;
             let output = document.getElementById("output");
-       
-            output.addEventListener("change", async() => {
-               output = ' ';
-            });
+            output.textContent = "AWESOME+\n";
+            
             document.getElementById("connect").addEventListener("click", async () => {
                 try {
-                    // Request a port and open a connection
-                    console.log("Connecting");
-                    port = await navigator.serial.requestPort();
-                    await port.open({ baudRate: 115200 });
-                    console.log("Connected");
-       
-                    console.log("Connected to ESP32-S3\n");
-                    // Setup the writer and reader
-                    const encoder = new TextEncoderStream();
-                    writer = encoder.writable.getWriter();
-                    const decoder = new TextDecoderStream();
-                    const inputDone = port.readable.pipeTo(decoder.writable);
-                    reader = decoder.readable.getReader();
-       
-                    // Read data from the serial port
-                    while (true) {
-                        const { value, done } = await reader.read();
-                        if (done) {
-                            break;
-                        }
-                        console.log(value);
+                console.log("Connecting");
+                port = await navigator.serial.requestPort();
+                await port.open({ baudRate: 115200 });
+                console.log("Connected");
+                
+                const encoder = new TextEncoderStream();
+                writer = encoder.writable.getWriter();
+                const decoder = new TextDecoderStream();
+                const inputDone = port.readable.pipeTo(decoder.writable);
+                reader = decoder.readable.getReader();
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) {
+                    break;
                     }
+                    console.log(value);
+                }
                 } catch (error) {
-                    output.textContent = "Error: " + error + "\n";
+                output.textContent = "Error: " + error + "\n";
                 }
             });
-       
+
             document.getElementById("flash").addEventListener("click", async () => {
                 const fileInput = document.getElementById("firmware");
                 const file = fileInput.files[0];
                 if (!file) {
-                    output.textContent = "Please select a firmware file.\n";
+                    output.textContent += "Please select a firmware file.\n";
                     return;
                 }
-       
+
                 try {
+                    const port = await navigator.serial.requestPort();
+                    await port.open({ baudRate: 115200 });
+                    const writer = port.writable.getWriter();
+
+                    output.textContent += "Beginning Flash\n";
                     const firmware = await file.arrayBuffer();
                     const firmwareUint8 = new Uint8Array(firmware);
-       
+
                     // Write firmware to ESP32
                     for (const byte of firmwareUint8) {
+                        
                         await writer.write(new Uint8Array([byte]));
                     }
-       
-                    output.textContent = "Firmware flashed successfully.\n";
+
+                    writer.releaseLock();
+                    output.textContent += "Completing Flash\n";
+                    await port.close();
+
+                    output.textContent += "Firmware flashed successfully.\n";
                 } catch (error) {
-                    console.log("Flashing error: " + error);
+                    output.textContent += "Flashing error: " + error + "\n";
                 }
             });
-            function myFunction() {
-            var popup = document.getElementById("myPopup");
-            popup.classList.toggle("show");
-            }       </script>
+
+
+        
+            </script>
          <div>
      </body>
      </html>
