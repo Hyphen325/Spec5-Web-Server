@@ -92,6 +92,13 @@ input[type = 'file']{
     background-color: transparent;
     color: white;
 }
+.esp-button{
+    esp-tools-button-border-radius: 10px;
+    visibility: invisible;
+}
+esp-web-install-button[install-unsupported] {
+    visibility: inherit;
+}
 
 
         </style>
@@ -109,19 +116,17 @@ input[type = 'file']{
             </header>
         <div class="container">
          <h1>ESP32-S3 Firmware Flasher</h1>
-         <button class ="btn" id="connect">Connect to ESP32</button>
-         <button class ="btn"  id="flash" >Flash Firmware
-            
-         </button>
-         <label class = "btn">
-         <esp-web-install-button class = "transparent"
-            manifest="./manifest.json"
-        ></esp-web-install-button>
-    </label>
-         <label class = "btn">
-            <input type="file" id="firmware" accept = ".bin">Upload File
-         </label>
-            <pre id="output" class = "transparent"></pre>
+         
+         <label>
+            <esp-web-install-button class = "esp-button"
+               manifest="https://hyphen325.github.io/Spec5-Web-Server/manifest.json"
+           >
+           
+           <button class = 'btn' slot="activate"> Connect</button>
+     <span slot="unsupported">Ah snap, your browser doesn't work!</span>
+     <span slot="not-allowed">Ah snap, you are not allowed to use this on HTTP!</span></esp-web-install-button>
+       </label>
+         
             
             </div>
 
