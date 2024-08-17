@@ -1,6 +1,6 @@
 {
-    "name": "ESPHome",
-    "version": "2021.11.0",
+    "name": "Spec5-Version1.0",
+    "version": "1.0",
     "home_assistant_domain": "esphome",
     "funding_url": "https://esphome.io/guides/supporters.html",
     "new_install_prompt_erase": false,
