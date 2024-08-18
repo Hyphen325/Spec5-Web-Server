@@ -99,6 +99,15 @@ input[type = 'file']{
 esp-web-install-button[install-unsupported] {
     visibility: inherit;
 }
+.scroll-box{
+    height:10ch;
+    width:60ch;
+    border:1px solid #ccc;
+    font:16px/26px Georgia, Garamond, Serif;
+    overflow:auto;
+    margin-top:2ch;
+    color: lightgray;
+}
 
 
         </style>
@@ -115,7 +124,7 @@ esp-web-install-button[install-unsupported] {
                 
             </header>
         <div class="container">
-         <h1>ESP32-S3 Firmware Flasher</h1>
+         <h1>SpecFive HyperMesh Alpha Flasher</h1>
          
          <label>
             <esp-web-install-button class = "esp-button"
@@ -126,6 +135,15 @@ esp-web-install-button[install-unsupported] {
      <span slot="unsupported">Ah snap, your browser doesn't work!</span>
      <span slot="not-allowed">Ah snap, you are not allowed to use this on HTTP!</span></esp-web-install-button>
        </label>
+       <div class="scroll-box">
+        Please use this entirely at your own risk. The HyperMesh firmware and protocol are at an alpha stage. This image will only work with an ESP32-S3 LoRA board.
+
+SpecFive is not responsible for any loss, damage or harm that results directly or indirectly from the installation or use of this firmware.
+
+This firmware is licensed for non-commercial, experimental use. The license prohibits tampering or reverse engineering. By installing the firmware you agree to a complete damage waiver, and to the terms of this license.
+
+
+        </div>
          
             
             </div>
