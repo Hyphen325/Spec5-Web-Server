@@ -1,13 +1,13 @@
 {
-    "name": "Spec5-Version1.0",
-    "version": "1.0",
+    "name": "Spec5-Version1.1",
+    "version": "1.1",
     "funding_url": "https://esphome.io/guides/supporters.html",
     "new_install_prompt_erase": false,
     "builds": [
       {
         "chipFamily": "ESP32-S3",
         "parts": [
-          { "path": "https://hyphen325.github.io/Spec5-Web-Server/firmware_1_00.bin", "offset": 0 }
+          { "path": "https://hyphen325.github.io/Spec5-Web-Server/firmware_1_10.bin", "offset": 0 }
         ]
       }
       
