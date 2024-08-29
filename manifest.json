@@ -9,7 +9,12 @@
         "parts": [
           { "path": "https://hyphen325.github.io/Spec5-Web-Server/firmware_1_10.bin", "offset": 0 }
         ]
-      }
+      },{
+        "chipFamily": "ESP32-S3",
+        "parts": [
+          { "path": "https://hyphen325.github.io/Spec5-Web-Server/firmware_1_00.bin", "offset": 0 }
+        ]
+      },
       
     ]
   }
